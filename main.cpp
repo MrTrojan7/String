@@ -5,7 +5,18 @@
 
 int main()
 {
-	String a;
+	String str("string 1, test 1");
+	str.ShowInfo();
+	str.PrintLn();
+	cout << str.GetCharAt(8) << "\n";
+	//str.GetLine();
+	//str.ShowInfo();
+	str.PrintLn();
+	String str2("string 2, test 2");
+	//cout << str.CompareTo(str2);
+	str.Concat(" concat!cbweuib uheufhuwefewfhweifjugwf23yfhehfkjhafgeqgfehewfhkjhaehhhhhhhhhhhhhhhuwegfuwiu");
+	str.PrintLn();
+
 
 	return 0;
 }
