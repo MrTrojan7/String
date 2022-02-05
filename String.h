@@ -29,7 +29,7 @@ public:
 	int CompareTo(char* text);
 	int CompareTo(String& original);
 	void Concat(const char* text);
-	//void Concat(int num);
+	void Concat(int num);
 	//void Concat(double num);
 	//void Concat(String& original);
 };

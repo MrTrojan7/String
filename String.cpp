@@ -1,7 +1,4 @@
 #include "String.h"
-char* text = nullptr;
-unsigned int length = 0;
-unsigned int capacity = 80;
 
 void String::CheckIndexLength(unsigned int index)
 {
@@ -42,6 +39,11 @@ void String::SetString(const char* text, unsigned int capacity)
 	if (capacity <= length)
 		capacity = length + 1;
 	this->capacity = capacity;
+	if (this->text != nullptr)
+	{
+		delete[] this->text;
+		this->text = nullptr;
+	}
 	this->text = new char[capacity];
 	strcpy_s(this->text, length + 1, text);
 }
@@ -82,14 +84,13 @@ void String::ShowInfo() const
 
 void String::Print() const
 {
-	for (unsigned int i = 0; i < GetLength(); i++)
+	for (unsigned int i = 0; text[i] != '\0'; i++)
 		cout << text[i];
 }
 
 void String::PrintLn() const
 {
-	for (unsigned int i = 0; i < GetLength(); i++)
-		cout << text[i];
+	Print();
 	cout << "\n";
 }
 
@@ -99,15 +100,18 @@ char String::GetCharAt(unsigned int index)
 	return text[index];
 }
 
-void String::GetLine() // do a function for reallocation *text
+void String::GetLine()
 {
 	int size = 4096;
 	char* temp = new char[size];
 	cout << "Enter string:\n";
 	cin.getline(temp, size);
-	
-	if(temp != nullptr)
+	Concat(temp);
+	if (temp != nullptr)
+	{
 		delete[] temp;
+		temp = nullptr;
+	}
 }
 
 int String::CompareTo(char* text)
@@ -128,11 +132,37 @@ int String::CompareTo(String& original)
 	return CompareTo(original.text);
 }
 
-void String::Concat(const char* text) //do a function for reallocation* text
+void String::Concat(const char* text)
 {
-	cout << "concat\n";
 	length = strlen(this->text) + strlen(text);
-	if (capacity <= length)
-		SetString(this->text, length);
+	this->capacity = length + 1;
+	char* temp = new char[strlen(this->text) + 1];
+	strcpy_s(temp, strlen(this->text) + 1, this->text);
+	if (this->text != nullptr)
+	{
+		delete[] this->text;
+		this->text = nullptr;
+	}
+	this->text = new char[capacity];
+	strcpy_s(this->text, length + 1, temp);
 	strcat_s(this->text, length + 1, text);
+	if (temp != nullptr)
+	{
+		delete[] temp;
+		temp = nullptr;
+	}
+}
+
+void String::Concat(int num) // remake
+{
+	int result = (log(num) / 2);
+	cout << "num-> " << num << " log-> " << result << "\n";
+	char* buff = new char[result]; // problem
+	for (int i = result - 1; i >= 0 ; i--)
+	{
+		buff[i] = ((num % 10) + 48);
+		num /= 10;
+	}
+	Concat(buff);
+	delete[] buff;
 }

@@ -16,6 +16,8 @@ int main()
 	//cout << str.CompareTo(str2);
 	str.Concat(" concat!cbweuib uheufhuwefewfhweifjugwf23yfhehfkjhafgeqgfehewfhkjhaehhhhhhhhhhhhhhhuwegfuwiu");
 	str.PrintLn();
+	str.Concat(123456789);
+	str.PrintLn();
 
 
 	return 0;
