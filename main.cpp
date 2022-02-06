@@ -12,12 +12,22 @@ int main()
 	//str.GetLine();
 	//str.ShowInfo();
 	str.PrintLn();
-	String str2("string 2, test 2");
+	String str2("string 1 test 2");
 	//cout << str.CompareTo(str2);
-	str.Concat(" concat!cbweuib uheufhuwefewfhweifjugwf23yfhehfkjhafgeqgfehewfhkjhaehhhhhhhhhhhhhhhuwegfuwiu");
+	str.ConcatChar(" concat!");
 	str.PrintLn();
-	str.Concat(123456789);
+	//str.ConcatNum(-123);
+	str.ConcatDouble(-1.121);
+	//str.GetLine();
+	//str.ConcatNum(12345678);
+	//str.ConcatChar(" ConcatAfterDouble!!!");
 	str.PrintLn();
+	str.Clear();
+	str.ConcatChar("22string 2, test 2hh");
+	str.PrintLn();
+	str2.PrintLn();
+	str.Contains(str2);
+	//str.StartWith(str2);
 
 
 	return 0;

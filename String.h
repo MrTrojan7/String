@@ -8,6 +8,12 @@ unsigned int length = 0;
 unsigned int capacity = 80;
 void CheckIndexLength(unsigned int index);
 void SetString(const char* text, unsigned int capacity);
+void ReallocNCopy();
+void ReallocNCopy(int sz);
+unsigned int GetSizeOfNum(unsigned int num);
+unsigned int GetSizeOfDouble(double d);
+unsigned int TruncRightNulls(unsigned num);
+String ToString(double d);
 
 public:
 	String();
@@ -27,9 +33,19 @@ public:
 	char GetCharAt(unsigned int index);
 	void GetLine();
 	int CompareTo(char* text);
-	int CompareTo(String& original);
-	void Concat(const char* text);
-	void Concat(int num);
+	int CompareTo(String const& original);
+	//////////////////
+	void ConcatChar(const char* text);
+	void ConcatNum(int num);
+	void ConcatString(String const& s);
+	void ConcatDouble(double d);
+	//////////////////
+	int IndexOf(char ch);
+	int LastIndexOf(char ch);
+	bool Equals(String const& right);
+	bool Contains(String const& right);
+	bool StartWith(String const& right);
+	bool EndsWith(String const& right);
 	//void Concat(double num);
 	//void Concat(String& original);
 };
