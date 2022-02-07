@@ -1,6 +1,6 @@
 #include "String.h"
 
-void String::CheckIndexLength(unsigned int index)
+void String::CheckIndexLength(int index)
 {
 	if (index < 0 || index >= length)
 		throw "Invalid index!";
@@ -116,10 +116,10 @@ void String::GetLine()
 
 int String::CompareTo(char* text)
 {
+	if (strlen(this->text) != strlen(text))
+		return -1;
 	unsigned int count = 0;
-	unsigned int min_length;
-	strlen(this->text) > strlen(text) ? min_length = strlen(text) : min_length = strlen(this->text);
-	for (unsigned int i = 0; i < min_length; i++)
+	for (unsigned int i = 0; text[i] != '\0'; i++)
 	{
 		if (this->text[i] == text[i])
 			++count;
@@ -140,7 +140,7 @@ void String::ConcatChar(const char* text)
 	strcat_s(this->text, capacity - 1, text);
 }
 
-void String::ConcatNum(int num) // remake
+void String::ConcatNum(int num)
 {
 	char str[100];
 	_itoa_s(num, str, 10);
@@ -183,27 +183,34 @@ int String::LastIndexOf(char ch)
 
 bool String::Equals(String const& right)
 {
-	if (length != right.length)
-		return false;
-	for (unsigned int i = 0; i < length; i++)
-	{
-		if (text[i] != right.text[i])
-			return false;
-	}
-	return true;
+	return CompareTo(right.text) == strlen(text);
 }
 
 bool String::Contains(String const& right)
 {
-	//unsigned int min_length;
-	//strlen(text) > strlen(right.text) ? min_length = strlen(right.text) : min_length = strlen(text);
-	int res = strcmp(text, right.text);
-	cout << res << "\n";
-	if (strcmp(text, right.text) <= 0)
+	if (Equals(right))
 	{
-		cout << "yes\n";
+		cout << "Contains is ==\n";
 		return true;
 	}
+		
+	if (strlen(text) < strlen(right.text))
+	{
+		cout << "strlen this* < strlen right!\n";
+		return false;
+	}
+	else
+	{
+		if (SearchFirstElement(right.text) == strlen(right.text))
+		{
+			cout << "Contains true!!\n";
+			return true;
+		}
+		cout << "this* contains is not have right text!\n";
+		return false;
+	}
+	cout << "Default false!\n";
+	return false;
 }
 
 bool String::StartWith(String const& right)
@@ -230,6 +237,9 @@ bool String::EndsWith(String const& right)
 {
 	return false;
 }
+
+
+
 
 void String::ReallocNCopy()
 {
@@ -277,6 +287,29 @@ String String::ToString(double d)
 	right = TruncRightNulls(right);
 	s_num.ConcatNum(right);
 	return s_num;
+}
+
+bool String::ContainsTo(String const& right)
+{
+
+	return false;
+}
+
+int String::SearchFirstElement(const char* text, int index)
+{
+	int result = 0;
+	if (index == strlen(this->text))
+		return result;
+	for (unsigned int i = 0; i < strlen(text); i++)
+	{
+		if(this->text[i + index] != text[i])
+			return SearchFirstElement(text, ++index);
+		if (this->text[i + index] == text[i])
+			++result;
+		if (result == strlen(text))
+			return result;
+	}
+	return result;
 }
 
 unsigned int String::GetSizeOfNum(unsigned int num)

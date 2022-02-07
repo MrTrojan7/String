@@ -6,7 +6,7 @@ private:
 char* text = nullptr;
 unsigned int length = 0;
 unsigned int capacity = 80;
-void CheckIndexLength(unsigned int index);
+void CheckIndexLength(int index);
 void SetString(const char* text, unsigned int capacity);
 void ReallocNCopy();
 void ReallocNCopy(int sz);
@@ -14,6 +14,8 @@ unsigned int GetSizeOfNum(unsigned int num);
 unsigned int GetSizeOfDouble(double d);
 unsigned int TruncRightNulls(unsigned num);
 String ToString(double d);
+bool ContainsTo(String const& right);
+int SearchFirstElement(const char* text, int index = 0);
 
 public:
 	String();

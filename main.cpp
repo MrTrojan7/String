@@ -5,27 +5,26 @@
 
 int main()
 {
-	String str("string 1, test 1");
+	String str("string 2, test 2");
 	str.ShowInfo();
-	str.PrintLn();
-	cout << str.GetCharAt(8) << "\n";
 	//str.GetLine();
 	//str.ShowInfo();
-	str.PrintLn();
-	String str2("string 1 test 2");
+	//str.PrintLn();
+	String str2("string 2, test 2");
+	str2.ShowInfo();
 	//cout << str.CompareTo(str2);
-	str.ConcatChar(" concat!");
-	str.PrintLn();
+	//str.ConcatChar(" concat!");
+	//str.PrintLn();
 	//str.ConcatNum(-123);
-	str.ConcatDouble(-1.121);
+	//str.ConcatDouble(-1.121);
 	//str.GetLine();
 	//str.ConcatNum(12345678);
 	//str.ConcatChar(" ConcatAfterDouble!!!");
-	str.PrintLn();
-	str.Clear();
-	str.ConcatChar("22string 2, test 2hh");
-	str.PrintLn();
-	str2.PrintLn();
+	//str.PrintLn();
+	//str.Clear();
+	//str.ConcatChar("v1string 2, test 2xfd00000");
+	//str.PrintLn();
+	//str2.PrintLn();
 	str.Contains(str2);
 	//str.StartWith(str2);
 
