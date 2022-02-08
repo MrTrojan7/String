@@ -5,28 +5,25 @@
 
 int main()
 {
-	String str("string 2, test 2");
+	String str("55555550string 1, test 207777770string 2, test 2");
 	str.ShowInfo();
-	//str.GetLine();
-	//str.ShowInfo();
-	//str.PrintLn();
 	String str2("string 2, test 2");
+	String str3("ABCDEF");
 	str2.ShowInfo();
-	//cout << str.CompareTo(str2);
-	//str.ConcatChar(" concat!");
-	//str.PrintLn();
-	//str.ConcatNum(-123);
-	//str.ConcatDouble(-1.121);
-	//str.GetLine();
-	//str.ConcatNum(12345678);
-	//str.ConcatChar(" ConcatAfterDouble!!!");
-	//str.PrintLn();
-	//str.Clear();
-	//str.ConcatChar("v1string 2, test 2xfd00000");
-	//str.PrintLn();
-	//str2.PrintLn();
-	str.Contains(str2);
+	str3.ShowInfo();
+
+	//str.Contains(str2);
 	//str.StartWith(str2);
+	//str.EndsWith(str2);
+	str.LastIndexOf(str2);
+	str.IndexOf(str2);
+	//str.Remove(40, 5);
+	str.Replace(2, '4');
+	str.Replace(str2, str3); // it's confusing, but it works
+	str.ShowInfo();
+	int pieces = 4;
+	str.Split(4, pieces);
+	cout << pieces << "\n";
 
 
 	return 0;

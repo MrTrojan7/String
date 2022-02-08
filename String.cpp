@@ -2,7 +2,7 @@
 
 void String::CheckIndexLength(int index)
 {
-	if (index < 0 || index >= length)
+	if (index < 0 || index >= strlen(this->text))
 		throw "Invalid index!";
 }
 
@@ -137,6 +137,7 @@ void String::ConcatChar(const char* text)
 	unsigned len = strlen(text) + strlen(this->text);
 	if (capacity <= len)
 		ReallocNCopy(len + 10);
+	this->length = len;
 	strcat_s(this->text, capacity - 1, text);
 }
 
@@ -147,6 +148,7 @@ void String::ConcatNum(int num)
 	int sz = strlen(str) + strlen(text);
 	if (sz >= capacity - 1)
 		ReallocNCopy(sz + 10);
+	this->length = sz;
 	ConcatChar(str);
 }
 
@@ -163,7 +165,7 @@ void String::ConcatDouble(double d)
 
 int String::IndexOf(char ch)
 {
-	for (unsigned int i = 0; i < length; i++)
+	for (unsigned int i = 0; i < strlen(text); i++)
 	{
 		if (text[i] == ch)
 			return i;
@@ -171,9 +173,49 @@ int String::IndexOf(char ch)
 	return -1;
 }
 
+int String::IndexOf(String const& right)
+{
+	if (!Contains(right))
+		return -1;
+	for (unsigned int i = 0; i < strlen(text); i++)
+	{
+		if (text[i] == right.text[0])
+		{
+			int res = 0;
+			for (unsigned int j = 0; j < strlen(right.text); j++)
+			{
+				if (text[i + j] == right.text[j])
+					++res;
+				if (res == strlen(right.text))
+				{
+					cout << "index first-in-> " << i << "\n";
+					return i;
+				}
+			}
+		}
+
+	}
+	return -1;
+}
+
+int String::LastIndexOf(String const& right)
+{
+	if (!Contains(right))
+		return -1;
+	for (unsigned int i = 0; i < strlen(text); i++)
+	{
+		if (SearchElements(right.text, i) < strlen(right.text))
+		{
+			cout << "index last-in-> " << i << "\n";
+			return i;
+		}
+	}
+	return -1;
+}
+
 int String::LastIndexOf(char ch)
 {
-	for (int i = length - 1; i >= 0; i--)
+	for (int i = strlen(text) - 1; i >= 0; i--)
 	{
 		if (text[i] == ch)
 			return i;
@@ -190,53 +232,167 @@ bool String::Contains(String const& right)
 {
 	if (Equals(right))
 	{
-		cout << "Contains is ==\n";
+		//cout << "Contains is ==\n";
 		return true;
 	}
 		
 	if (strlen(text) < strlen(right.text))
 	{
-		cout << "strlen this* < strlen right!\n";
+		//cout << "strlen this* < strlen right!\n";
 		return false;
 	}
 	else
 	{
-		if (SearchFirstElement(right.text) == strlen(right.text))
+		if (SearchElements(right.text) == strlen(right.text))
 		{
-			cout << "Contains true!!\n";
+			//cout << "Contains true!!\n";
 			return true;
 		}
-		cout << "this* contains is not have right text!\n";
+		//cout << "this* contains is not have right text!\n";
 		return false;
 	}
-	cout << "Default false!\n";
+	//cout << "Default false!\n";
 	return false;
 }
 
 bool String::StartWith(String const& right)
 {
-	unsigned int min_length;
-	strlen(text) > strlen(right.text) ? min_length = strlen(right.text) : min_length = strlen(text);
-	if (CompareTo(right) == min_length)
+	if (!Contains(right))
 	{
-		for (unsigned int i = 0; i < min_length; i++)
-		{
-			if (text[i] != right.text[i])
-			{
-				cout << "FALSE!\n";
-				return false;
-			}
-		}
-		cout << "TRUE!\n";
-		return true;
+		//cout << "StartWith: string !=\n";
+		return false;
 	}
+	else 
+	{
+		int res = 0;
+		for (unsigned int i = 0; i < strlen(right.text); i++)
+		{
+			if (text[i] == right.text[i])
+				++res;
+		}
+		if (res == strlen(right.text))
+		{
+			//cout << "StartWith TRUE!!\n";
+			return true;
+		}
+	}
+	//cout << "StartWith FALSE!!\n";
 	return false;
 }
 
 bool String::EndsWith(String const& right)
 {
-	return false;
+	if (!Contains(right))
+	{
+		//cout << "EndsWith: string !=\n";
+		return false;
+	}
+		
+	if (SearchElements(right.text, (strlen(text) - strlen(right.text))) == strlen(right.text))
+	{
+		//cout << "EndsWith TRUE!!\n";
+		return true;
+	}
+	else
+	{
+		//cout << "EndsWith FALSE!!\n";
+		return false;
+	}
 }
+
+void String::Remove(int start)
+{
+	CheckIndexLength(start);
+	this->text[start] = '\0';
+}
+
+void String::Remove(int start, int count)
+{
+	int len = strlen(text);
+	CheckIndexLength(start);
+	if (start + count > len)
+	{
+		Remove(start);
+		return;
+	}
+
+
+	for (int i = 0; i < count; i++)
+	{
+		//_str[start + i] = '\0';
+		this->text[start + i] = ' ';
+	}
+
+	len = len - start;
+	int i = start;
+	for (; i < start + len; i++)
+	{
+		this->text[i] = this->text[i + count];
+	}
+	this->text[i] = '\0';
+}
+
+void String::Replace(char R, char Z)
+{
+	while(IndexOf(R) >= 0)
+		Replace(IndexOf(R), Z);
+}
+
+void String::Replace(int index, char Z)
+{
+	CheckIndexLength(index);
+	this->text[index] = Z;
+}
+
+void String::Replace(String& substr, String& rep)
+{
+	if (!Contains(substr))
+		return;
+	int separator = IndexOf(substr);
+	char* tmp = new char[strlen(text) - separator];
+	strcpy_s(tmp, strlen(text) - separator + 1, &text[separator + strlen(substr.text)]);
+	ReallocNCopy((strlen(tmp) + strlen(rep.text) + strlen(&text[strlen(tmp)])));
+	text[separator] = '\0';
+	strcat_s(text, capacity - 1, rep.text);
+	strcat_s(text, capacity - 1, tmp);
+	tmp[0] = '\0';
+}
+
+String* String::Split(char separator, int& pieces)
+{
+	int count = 0;
+	for (unsigned int i = 0; i < strlen(this->text); i++)
+	{
+		if (this->text[i] == separator)
+			++count;
+	}
+	pieces = count;
+	String* arr = new String[count];
+	count = 0;
+	for (unsigned int i = 0; i < strlen(this->text); i++)
+	{
+		if (this->text[i] != separator)
+			arr[count].Insert(text[i]);
+		if (this->text[i] == separator)
+			++count;
+	}
+	for (int i = 0; i < count; i++)
+	{
+		arr[i].PrintLn();
+	}
+
+	return arr;
+}
+
+void String::Insert(char ch) // problem
+{
+	ReallocNCopy(strlen(text) + 2);
+	text[strlen(text)] = ch;
+	text[strlen(text) + 1] = '\0';
+}
+
+
+
 
 
 
@@ -295,15 +451,15 @@ bool String::ContainsTo(String const& right)
 	return false;
 }
 
-int String::SearchFirstElement(const char* text, int index)
+int String::SearchElements(const char* text, int index)
 {
 	int result = 0;
-	if (index == strlen(this->text))
+	if (index == (strlen(this->text) - strlen(text) + 1))
 		return result;
 	for (unsigned int i = 0; i < strlen(text); i++)
 	{
 		if(this->text[i + index] != text[i])
-			return SearchFirstElement(text, ++index);
+			return SearchElements(text, ++index);
 		if (this->text[i + index] == text[i])
 			++result;
 		if (result == strlen(text))
