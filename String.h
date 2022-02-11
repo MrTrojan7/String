@@ -1,5 +1,6 @@
 #pragma once
 #include "AllLibraries.h"
+#include "Sorter.h"
 class String
 {
 private:
@@ -55,9 +56,16 @@ public:
 	void Replace(char R, char Z);
 	void Replace(int index, char Z);
 	void Replace(String& substr, String& rep);
-	String* Split(char separator, int& pieces);
-	void Insert(char ch);
-	//void Concat(double num);
-	//void Concat(String& original);
+	//String* Split(char separator, int& pieces);
+	String ToLower();
+	String ToUpper();
+	void TrimStart();
+	void TrimEnd();
+	void Trim();
+	void Reverse();
+	void SortAZ();
+	void SortZA();
+	void Shuffle();
+	void RandomFill();
 };
 

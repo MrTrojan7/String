@@ -188,7 +188,7 @@ int String::IndexOf(String const& right)
 					++res;
 				if (res == strlen(right.text))
 				{
-					cout << "index first-in-> " << i << "\n";
+					//cout << "index first-in-> " << i << "\n";
 					return i;
 				}
 			}
@@ -206,7 +206,7 @@ int String::LastIndexOf(String const& right)
 	{
 		if (SearchElements(right.text, i) < strlen(right.text))
 		{
-			cout << "index last-in-> " << i << "\n";
+			//cout << "index last-in-> " << i << "\n";
 			return i;
 		}
 	}
@@ -358,38 +358,121 @@ void String::Replace(String& substr, String& rep)
 	tmp[0] = '\0';
 }
 
-String* String::Split(char separator, int& pieces)
+String String::ToLower()
 {
-	int count = 0;
-	for (unsigned int i = 0; i < strlen(this->text); i++)
+	for (int i = 0; i < strlen(text); i++)
 	{
-		if (this->text[i] == separator)
-			++count;
+		if (text[i] >= 'A' && text[i] <= 'Z') 
+			text[i] += 'z' - 'Z';
+		if (text[i] >= 'À' && text[i] <= 'ß')
+			text[i] += 'ÿ' - 'ß';
 	}
-	pieces = count;
-	String* arr = new String[count];
-	count = 0;
-	for (unsigned int i = 0; i < strlen(this->text); i++)
-	{
-		if (this->text[i] != separator)
-			arr[count].Insert(text[i]);
-		if (this->text[i] == separator)
-			++count;
-	}
-	for (int i = 0; i < count; i++)
-	{
-		arr[i].PrintLn();
-	}
-
-	return arr;
+	return String();
 }
 
-void String::Insert(char ch) // problem
+String String::ToUpper()
 {
-	ReallocNCopy(strlen(text) + 2);
-	text[strlen(text)] = ch;
-	text[strlen(text) + 1] = '\0';
+	for (int i = 0; i < strlen(text); i++)
+	{
+		if (text[i] >= 'a' && text[i] <= 'z')
+			text[i] -= 'z' - 'Z';
+		if (text[i] >= 'à' && text[i] <= 'ÿ')
+			text[i] -= 'ÿ' - 'ß';
+	}
+	return String();
 }
+
+void String::TrimStart()
+{
+	int index = 0;
+	for (unsigned int i = 0; i < strlen(text); i++)
+	{
+		if (text[i] != ' ')
+			break;
+		++index;
+	}
+	strcpy_s(text, strlen(text), &text[index]);
+}
+
+void String::TrimEnd()
+{
+	int index = strlen(text);
+	cout << index << "\n";
+	for (int i = strlen(text) - 1; i >= 0; i--)
+	{
+		if (text[i] != ' ')
+			break;
+		--index;
+	}
+	text[index] = '\0';
+	cout << strlen(text) << "\n";
+	//strcpy_s(text, strlen(text), text);
+}
+
+void String::Trim()
+{
+	TrimStart();
+	TrimEnd();
+}
+
+void String::Reverse()
+{
+	for (unsigned int i = 0; i < strlen(text) / 2; i++)
+		swap(text[i], text[strlen(text) - i - 1]);
+}
+
+void String::SortAZ()
+{
+	Sorter<char> temp;
+	temp.InsertSort(text, strlen(text));
+}
+
+void String::SortZA()
+{
+	SortAZ();
+	Reverse();
+}
+
+void String::Shuffle()
+{
+	random_shuffle(&text[0], &text[strlen(text)]);
+}
+
+void String::RandomFill()
+{
+	for (unsigned int i = 0; i < strlen(text); i++)
+		text[i] = rand() % (32 - 256) + 256;
+}
+
+//String* String::Split(char separator, int& pieces)
+//{
+//	// to be continued
+//	int count = 0;
+//	for (unsigned int i = 0; i < strlen(this->text); i++)
+//	{
+//		if (this->text[i] == separator)
+//			++count;
+//	}
+//	pieces = count;
+//	String* arr = new String[count];
+//	count = 0;
+//	for (unsigned int i = 0; i < strlen(this->text); i++)
+//	{
+//		if (this->text[i] != separator)
+//			strca
+//			strcat_s(arr[count].text[i], strlen(arr[count].text) + 1, )
+//			arr[count].Insert(text[i]);
+//		if (this->text[i] == separator)
+//			++count;
+//	}
+//	for (int i = 0; i < count; i++)
+//	{
+//		arr[i].PrintLn();
+//	}
+//
+//	return arr;
+//}
+
 
 
 
