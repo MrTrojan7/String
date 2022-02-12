@@ -67,5 +67,29 @@ public:
 	void SortZA();
 	void Shuffle();
 	void RandomFill();
+	//void Insert(char ch, unsigned int index);
+	///////// 
+	//overloading
+	/////////
+	void operator = (const String& original);
+	bool operator ==(const String& original);
+	bool operator > (const String& original);
+	bool operator < (const String& original);
+	bool operator >= (const String& original);
+	bool operator <= (const String& original);
+	bool operator != (const String& original);
+	String operator ()(const char* text, unsigned int capacity);
+	char operator [](unsigned int index);
+	String operator + (const String& original);
+	String operator += (const String& original);
+	String operator += (const char* text);
+	String operator + (const char* text);
+	//String operator + (const char ch);
+	friend ostream& operator << (ostream& out, const String& original);
+	friend istream& operator >> (istream& in, const String& original);
+	//operator char* ();
+	//operator int ();
+	//operator double ();
+
 };
 

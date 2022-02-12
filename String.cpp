@@ -444,6 +444,103 @@ void String::RandomFill()
 		text[i] = rand() % (32 - 256) + 256;
 }
 
+void String::operator=(const String& original)
+{
+	if (strlen(text) <= strlen(original.text))
+		ReallocNCopy(strlen(original.text) + strlen(text));
+	strcpy_s(text, strlen(original.text) + 1, original.text);
+}
+
+bool String::operator==(const String& original)
+{
+	return Equals(original);
+}
+
+bool String::operator>(const String& original)
+{
+	return strlen(text) > strlen(original.text);
+}
+
+bool String::operator<(const String& original)
+{
+	return strlen(text) < strlen(original.text);
+}
+
+bool String::operator>=(const String& original)
+{
+	return strlen(text) >= strlen(original.text);
+}
+
+bool String::operator<=(const String& original)
+{
+	return strlen(text) <= strlen(original.text);
+}
+
+bool String::operator!=(const String& original)
+{
+	return strlen(text) != strlen(original.text);
+}
+
+String String::operator()(const char* text, unsigned int capacity)
+{
+	this->String::String(text, capacity);
+	return String();
+}
+
+char String::operator[](unsigned int index)
+{
+	CheckIndexLength(index);
+	return text[index];
+}
+
+String String::operator+(const String& original)
+{
+	ConcatString(original);
+	return String();
+}
+
+String String::operator+=(const String& original)
+{
+	ConcatString(original);
+	return String();
+}
+
+String String::operator+=(const char* text)
+{
+	ConcatChar(text);
+	return String();
+}
+
+String String::operator+(const char* text)
+{
+	ConcatChar(text);
+	return String();
+}
+
+
+//void String::Insert(char ch, unsigned int index)
+//{
+//	bool flag = false;
+//	int res = strlen(text);
+//	char* tmp = new char[res];
+//	for (unsigned int i = 0; i < strlen(text); i++)
+//	{
+//		if (index == i)
+//		{
+//			flag = true;
+//			tmp[i] = ch;
+//		}
+//		tmp[i + flag] = text[i];
+//	}
+//	tmp[res + 1] = '\0';
+//	if (text != nullptr)
+//	{
+//		delete[] text;
+//		text = nullptr;
+//	}
+//	text = tmp;
+//}
+
 //String* String::Split(char separator, int& pieces)
 //{
 //	// to be continued
@@ -456,14 +553,19 @@ void String::RandomFill()
 //	pieces = count;
 //	String* arr = new String[count];
 //	count = 0;
+//	int index = 0;
 //	for (unsigned int i = 0; i < strlen(this->text); i++)
 //	{
 //		if (this->text[i] != separator)
-//			strca
-//			strcat_s(arr[count].text[i], strlen(arr[count].text) + 1, )
-//			arr[count].Insert(text[i]);
+//		{
+//			arr[count].Insert(text[i], index);
+//			++index;
+//		}
 //		if (this->text[i] == separator)
+//		{
 //			++count;
+//			index = 0;
+//		}
 //	}
 //	for (int i = 0; i < count; i++)
 //	{
@@ -597,4 +699,18 @@ unsigned int String::TruncRightNulls(unsigned num)
 			break;
 	}
 	return num;
+}
+
+ostream& operator<<(ostream& out, const String& original)
+{
+	int len = strlen(original.text);
+	for (unsigned int i = 0; i < len; i++)
+		out << original.text[i];
+	return out;
+}
+
+istream& operator>>(istream& in, const String& original)
+{
+	in >> original.text;
+	return in;
 }
